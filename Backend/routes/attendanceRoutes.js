@@ -5,11 +5,15 @@ const router = express.Router();
 
 router.get('/', async (req, res) => {
   try {
-    const records = await Attendance.find().populate('memberId');
+    // 1. Removed .populate('memberId')
+    const records = await Attendance.find();
+    
     res.json(
       records.map((doc) => ({
         ...doc.toObject(),
         id: doc._id.toString(),
+        // 2. Force memberId to be a standard string
+        memberId: doc.memberId.toString(), 
       }))
     );
   } catch (error) {
@@ -30,6 +34,7 @@ router.post('/', async (req, res) => {
     res.status(201).json({
       ...attendance.toObject(),
       id: attendance._id.toString(),
+      memberId: attendance.memberId.toString(), // Force string here too
     });
   } catch (error) {
     res.status(400).json({ message: error.message });

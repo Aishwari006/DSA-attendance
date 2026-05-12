@@ -5,7 +5,7 @@ import { useStore, memberStats } from "@/store/useStore";
 import { MemberCard } from "@/components/MemberCard";
 import { GlassCard } from "@/components/GlassCard";
 import { WeeklyChart, MonthlyChart } from "@/components/Charts";
-import { format } from "date-fns";
+import { format, isWithinInterval, startOfMonth, endOfMonth, parseISO } from "date-fns";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -23,10 +23,27 @@ function Dashboard() {
   const { members, attendance, trackingStart } = useStore();
   const allStats = members.map((m) => memberStats(m.id, attendance, trackingStart));
 
-  const totalDays = allStats.reduce((s, x) => s + x.totalDays, 0);
-  const avgPercentage = Math.round(allStats.reduce((s, x) => s + x.percentage, 0) / allStats.length);
-  const monthSum = allStats.reduce((s, x) => s + x.monthly, 0);
-  const today = format(new Date(), "yyyy-MM-dd");
+  // 1. Days Logged: Count unique days where at least one person showed up
+  const uniqueDates = new Set(attendance.map((a) => a.date));
+  const totalDays = uniqueDates.size;
+
+  // 2. This Month: Count unique active days in the current month
+  const todayDate = new Date();
+  const mStart = startOfMonth(todayDate);
+  const mEnd = endOfMonth(todayDate);
+  
+  const monthSum = new Set(
+    attendance
+      .filter((a) => isWithinInterval(parseISO(a.date), { start: mStart, end: mEnd }))
+      .map((a) => a.date)
+  ).size;
+
+  // 3. Avg Attendance: The average percentage rate across all members
+  const avgPercentage = allStats.length 
+    ? Math.round(allStats.reduce((s, x) => s + x.percentage, 0) / allStats.length) 
+    : 0;
+
+  const today = format(todayDate, "yyyy-MM-dd");
   const todayCount = attendance.filter((a) => a.date === today).length;
 
   return (

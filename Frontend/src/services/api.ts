@@ -9,7 +9,17 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
   });
 
   if (!res.ok) {
-    throw new Error(`Request failed: ${res.status}`);
+    // Try to extract the exact error message sent by your Express backend
+    let errorMessage = `Request failed: ${res.status}`;
+    try {
+      const errorData = await res.json();
+      if (errorData && errorData.message) {
+        errorMessage = errorData.message;
+      }
+    } catch (e) {
+      // If the response wasn't JSON, just fall back to the status code
+    }
+    throw new Error(errorMessage);
   }
 
   return res.json();
@@ -36,7 +46,13 @@ export const api = {
     request(`/questions/${id}`, {
       method: "DELETE",
     }),
+  updateMember: (id: string, data: any) =>
+    request(`/users/${id}`, {   // Note: match this to your exact route, it might be /members/${id}
+      method: "PUT",
+      body: JSON.stringify(data),
+    }),
 
+  // Your arguments here are perfectly fine! No need to change them to an object.
   postAttendance: (memberId: string, date: string) =>
     request("/attendance", {
       method: "POST",

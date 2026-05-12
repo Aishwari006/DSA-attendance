@@ -6,24 +6,27 @@ import { GlassCard } from "./GlassCard";
 import { toast } from "sonner";
 import type { Member } from "@/data/mock";
 import { api } from "@/services/api";
+import { format, startOfWeek, addDays } from "date-fns";
 
 export function MemberCard({ member, index }: { member: Member; index: number }) {
-  const { attendance, trackingStart, markAttendance } = useStore();
+  const { attendance, trackingStart, setAttendance } = useStore();
   const stats = memberStats(member.id, attendance, trackingStart);
   const done = markedToday(member.id, attendance);
 
-  const handleMark = async() => {
+  const handleMark = async () => {
     try {
-    const today = new Date().toISOString().slice(0, 10);
-    await api.postAttendance(member.id, today);
+      const today = format(new Date(), "yyyy-MM-dd");
+      
+      await api.postAttendance(member.id, today);
 
-    const updatedAttendance = await api.getAttendance();
-    useStore.getState().setAttendance(updatedAttendance as any);
+      const updatedAttendance = await api.getAttendance();
+      setAttendance(updatedAttendance);
 
-    toast.success("Attendance marked successfully!");
-  } catch (error) {
-    toast.error("Attendance already marked for today.");
-  }
+      toast.success("Attendance marked successfully!");
+    } catch (error: any) {
+      console.error("Failed to mark attendance:", error);
+      toast.error(error.message || "Failed to mark attendance.");
+    }
   };
 
   return (
@@ -44,7 +47,13 @@ export function MemberCard({ member, index }: { member: Member; index: number })
           </div>
           <div>
             <div className="font-semibold leading-tight">{member.name}</div>
-            <div className="text-xs text-muted-foreground">{member.favoriteTopic}</div>
+            <div className="text-xs text-muted-foreground">
+              {/* Conditionally render the favorite topic text */}
+              {member.favoriteTopic ? (
+                <>Favorite topic: {member.favoriteTopic} <span className="mx-1">·</span></>
+              ) : null}
+              <span className="text-cyan">{member.solvedCount || 0} solved</span>
+            </div>
           </div>
         </div>
         <Link
@@ -70,7 +79,6 @@ export function MemberCard({ member, index }: { member: Member; index: number })
         <span>Month {stats.monthly}d</span>
       </div>
 
-      {/* Week dots */}
       <WeekDots memberId={member.id} />
 
       <motion.button
@@ -107,19 +115,20 @@ function Stat({ label, value, suffix, icon }: { label: string; value: number; su
 function WeekDots({ memberId }: { memberId: string }) {
   const { attendance } = useStore();
   const days = ["M", "T", "W", "T", "F", "S", "S"];
-  const today = new Date();
-  const monday = new Date(today);
-  monday.setDate(today.getDate() - ((today.getDay() + 6) % 7));
+  
+  const todayDate = new Date();
+  const monday = startOfWeek(todayDate, { weekStartsOn: 1 });
   const dateSet = new Set(attendance.filter((a) => a.memberId === memberId).map((a) => a.date));
 
   return (
     <div className="flex items-center justify-between">
       {days.map((d, i) => {
-        const day = new Date(monday);
-        day.setDate(monday.getDate() + i);
-        const iso = day.toISOString().slice(0, 10);
-        const has = dateSet.has(iso);
-        const isToday = iso === today.toISOString().slice(0, 10);
+        const currentDay = addDays(monday, i);
+        const dateStr = format(currentDay, "yyyy-MM-dd");
+        
+        const has = dateSet.has(dateStr);
+        const isToday = dateStr === format(todayDate, "yyyy-MM-dd");
+        
         return (
           <div key={i} className="flex flex-col items-center gap-1">
             <div

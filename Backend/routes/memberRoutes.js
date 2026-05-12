@@ -28,5 +28,25 @@ router.post('/', async (req, res) => {
     res.status(400).json({ message: error.message });
   }
 });
+router.put('/:id', async (req, res) => {
+  try {
+    const updated = await Member.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true }
+    );
+    
+    if (!updated) {
+      return res.status(404).json({ message: 'Member not found' });
+    }
+
+    res.json({
+      ...updated.toObject(),
+      id: updated._id.toString(),
+    });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
 
 module.exports = router;
