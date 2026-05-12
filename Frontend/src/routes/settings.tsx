@@ -9,7 +9,7 @@ import { toast } from "sonner";
 export const Route = createFileRoute("/settings")({
   head: () => ({
     meta: [
-      { title: "Settings — DSA Tracker" },
+      { title: "Settings - DSA Tracker" },
       { name: "description", content: "Group settings and member roster." },
     ],
   }),

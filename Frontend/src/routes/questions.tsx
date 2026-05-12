@@ -4,7 +4,7 @@ import { QuestionBoard } from "@/components/QuestionBoard";
 export const Route = createFileRoute("/questions")({
   head: () => ({
     meta: [
-      { title: "Question board — DSA Tracker" },
+      { title: "Question board - DSA Tracker" },
       { name: "description", content: "A shared board of useful DSA problems with notes, tags, and upvotes." },
       { property: "og:title", content: "DSA Question Board" },
       { property: "og:description", content: "Save and discuss the problems worth talking about." },

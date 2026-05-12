@@ -10,9 +10,9 @@ import { format, isWithinInterval, startOfMonth, endOfMonth, parseISO } from "da
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "DSA Squad 🚀 — The Daily Grind" },
+      { title: "DSA Squad - The Daily Grind" },
       { name: "description", content: "Group dashboard for tracking daily DSA streaks. No zero days allowed!" },
-      { property: "og:title", content: "DSA Squad 🚀 — Dashboard" },
+      { property: "og:title", content: "DSA Squad - Dashboard" },
       { property: "og:description", content: "Watch the squad crush algorithms and build unbreakable streaks." },
     ],
   }),
@@ -61,7 +61,7 @@ function Dashboard() {
         </div>
         <h1 className="text-4xl sm:text-5xl font-bold tracking-tight">
           Crushing <span className="text-gradient-cyan">Algorithms</span>,
-          <br className="hidden sm:block" /> one streak at a time. 🚀
+          <br className="hidden sm:block" /> one streak at a time. 
         </h1>
         <p className="mt-3 max-w-2xl text-muted-foreground">
           The ultimate accountability hub for the squad. Log your daily grind, watch our momentum explode, and stash those mind-bending problems. No zero days!
