@@ -10,10 +10,10 @@ import { format, isWithinInterval, startOfMonth, endOfMonth, parseISO } from "da
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Dashboard — DSA Tracker" },
-      { name: "description", content: "Group dashboard with daily DSA attendance, streaks, and weekly progress." },
-      { property: "og:title", content: "DSA Tracker Dashboard" },
-      { property: "og:description", content: "See everyone's daily DSA progress in one place." },
+      { title: "DSA Squad 🚀 — The Daily Grind" },
+      { name: "description", content: "Group dashboard for tracking daily DSA streaks. No zero days allowed!" },
+      { property: "og:title", content: "DSA Squad 🚀 — Dashboard" },
+      { property: "og:description", content: "Watch the squad crush algorithms and build unbreakable streaks." },
     ],
   }),
   component: Dashboard,
@@ -57,33 +57,33 @@ function Dashboard() {
       >
         <div className="inline-flex items-center gap-2 rounded-full glass px-3 py-1 text-xs text-muted-foreground mb-4">
           <span className="h-1.5 w-1.5 rounded-full bg-success animate-pulse" />
-          {todayCount}/{members.length} marked today · {format(new Date(), "EEEE, MMM d")}
+          {todayCount}/{members.length} grinding today · {format(new Date(), "EEEE, MMM d")}
         </div>
         <h1 className="text-4xl sm:text-5xl font-bold tracking-tight">
-          Building <span className="text-gradient-cyan">DSA habits</span>,
-          <br className="hidden sm:block" /> together every day.
+          Crushing <span className="text-gradient-cyan">Algorithms</span>,
+          <br className="hidden sm:block" /> one streak at a time. 🚀
         </h1>
         <p className="mt-3 max-w-2xl text-muted-foreground">
-          A shared streak hub for the squad. Mark your day, watch the team's momentum grow, and save the problems worth talking about.
+          The ultimate accountability hub for the squad. Log your daily grind, watch our momentum explode, and stash those mind-bending problems. No zero days!
         </p>
       </motion.div>
 
       {/* Top stats */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 mb-8">
-        <Kpi icon={<Users className="h-4 w-4" />} label="Active members" value={members.length} />
-        <Kpi icon={<CalendarCheck className="h-4 w-4" />} label="Days logged (90d)" value={totalDays} />
-        <Kpi icon={<TrendingUp className="h-4 w-4" />} label="Avg attendance" value={`${avgPercentage}%`} />
-        <Kpi icon={<Flame className="h-4 w-4 text-warning" />} label="This month" value={`${monthSum}d`} />
+        <Kpi icon={<Users className="h-4 w-4" />} label="The Squad" value={members.length} />
+        <Kpi icon={<CalendarCheck className="h-4 w-4" />} label="Days Grinded (90d)" value={totalDays} />
+        <Kpi icon={<TrendingUp className="h-4 w-4" />} label="Consistency" value={`${avgPercentage}%`} />
+        <Kpi icon={<Flame className="h-4 w-4 text-warning" />} label="Monthly Fire" value={`${monthSum}d`} />
       </div>
 
       {/* Charts */}
       <div className="grid gap-4 lg:grid-cols-5 mb-10">
         <GlassCard className="lg:col-span-2" hover={false}>
-          <SectionTitle title="This week" subtitle="Group attendance per day" />
+          <SectionTitle title="Weekly Heatmap" subtitle="Who showed up to grind this week?" />
           <WeeklyChart />
         </GlassCard>
         <GlassCard className="lg:col-span-3" hover={false}>
-          <SectionTitle title="Last 30 days" subtitle="Daily attendance trend" />
+          <SectionTitle title="The 30-Day Marathon" subtitle="Squad momentum over time" />
           <MonthlyChart />
         </GlassCard>
       </div>
@@ -91,8 +91,8 @@ function Dashboard() {
       {/* Members */}
       <div className="flex items-end justify-between mb-4">
         <div>
-          <h2 className="text-2xl font-semibold tracking-tight">The squad</h2>
-          <p className="text-sm text-muted-foreground">Everyone's progress, side by side. No rankings, just rhythm.</p>
+          <h2 className="text-2xl font-semibold tracking-tight">The Hall of Fame 🏆</h2>
+          <p className="text-sm text-muted-foreground">Side-by-side progress. No toxic leaderboards, just pure consistency vibes.</p>
         </div>
       </div>
 
