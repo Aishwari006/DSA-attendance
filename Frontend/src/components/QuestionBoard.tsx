@@ -7,7 +7,7 @@ import type { Question } from "@/data/mock";
 import { cn } from "@/lib/utils";
 import { api } from "@/services/api";
 
-const PLATFORMS = ["LeetCode", "Codeforces", "CodeChef", "AtCoder"] as const;
+const PLATFORMS = ["LeetCode",  "GFG","Codeforces", "CodeChef"] as const;
 const DIFFICULTIES = ["Easy", "Medium", "Hard"] as const;
 
 const diffColor: Record<string, string> = {
@@ -20,7 +20,7 @@ const platColor: Record<string, string> = {
   LeetCode: "bg-amber-500/15 text-amber-300 border-amber-500/30",
   Codeforces: "bg-blue-500/15 text-blue-300 border-blue-500/30",
   CodeChef: "bg-orange-500/15 text-orange-300 border-orange-500/30",
-  AtCoder: "bg-emerald-500/15 text-emerald-300 border-emerald-500/30",
+  GFG: "bg-emerald-500/15 text-emerald-300 border-emerald-500/30",
 };
 
 const refreshQuestions = async () => {
