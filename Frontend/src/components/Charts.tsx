@@ -38,7 +38,17 @@ export function WeeklyChart({ memberId }: { memberId?: string }) {
         </defs>
         <CartesianGrid strokeDasharray="3 3" stroke="oklch(1 0 0 / 0.06)" vertical={false} />
         <XAxis dataKey="day" stroke="oklch(0.7 0.03 250)" fontSize={11} axisLine={false} tickLine={false} />
-        <YAxis stroke="oklch(0.7 0.03 250)" fontSize={11} axisLine={false} tickLine={false} allowDecimals={false} />
+        
+        {/* FIX: Added domain to strictly cap the Y-Axis at the number of members */}
+        <YAxis 
+          stroke="oklch(0.7 0.03 250)" 
+          fontSize={11} 
+          axisLine={false} 
+          tickLine={false} 
+          allowDecimals={false} 
+          domain={[0, memberId ? 1 : members.length]} 
+        />
+        
         <Tooltip cursor={{ fill: "oklch(1 0 0 / 0.04)" }} contentStyle={tooltipStyle} />
         <Bar dataKey="count" fill="url(#barCyan)" radius={[8, 8, 0, 0]} />
       </BarChart>
@@ -69,7 +79,17 @@ export function MonthlyChart({ memberId }: { memberId?: string }) {
         </defs>
         <CartesianGrid strokeDasharray="3 3" stroke="oklch(1 0 0 / 0.05)" vertical={false} />
         <XAxis dataKey="day" stroke="oklch(0.7 0.03 250)" fontSize={11} axisLine={false} tickLine={false} interval={3} />
-        <YAxis stroke="oklch(0.7 0.03 250)" fontSize={11} axisLine={false} tickLine={false} allowDecimals={false} />
+        
+        {/* FIX: Also capped the monthly chart to match the number of members */}
+        <YAxis 
+          stroke="oklch(0.7 0.03 250)" 
+          fontSize={11} 
+          axisLine={false} 
+          tickLine={false} 
+          allowDecimals={false} 
+          domain={[0, memberId ? 1 : members.length]} 
+        />
+        
         <Tooltip contentStyle={tooltipStyle} />
         <Line
           type="monotone"

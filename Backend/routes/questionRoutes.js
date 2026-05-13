@@ -5,11 +5,14 @@ const router = express.Router();
 
 router.get('/', async (req, res) => {
   try {
-    const questions = await Question.find().populate('addedBy');
+    // 1. Removed .populate('addedBy') 
+    const questions = await Question.find();
     res.json(
       questions.map((doc) => ({
         ...doc.toObject(),
         id: doc._id.toString(),
+        // 2. Force addedBy to be a string so your React frontend can match it
+        addedBy: doc.addedBy.toString(),
       }))
     );
   } catch (error) {
@@ -23,6 +26,7 @@ router.post('/', async (req, res) => {
     res.status(201).json({
       ...question.toObject(),
       id: question._id.toString(),
+      addedBy: question.addedBy.toString(), // Force string here too
     });
   } catch (error) {
     res.status(400).json({ message: error.message });
@@ -44,6 +48,7 @@ router.put('/:id', async (req, res) => {
     res.json({
       ...updated.toObject(),
       id: updated._id.toString(),
+      addedBy: updated.addedBy.toString(), // Force string here too
     });
   } catch (error) {
     res.status(400).json({ message: error.message });
